@@ -4,7 +4,7 @@ require('./config/config')
 // dependencias
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const mongoose = require('mongoose');
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -13,33 +13,18 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/', (req, res) => {
-	res.send('peticion GET');
-})
+// rutas
+app.use( require('./routes/usuario') );
 
-app.post('/', (req, res) => {
-	let body = req.body;
+// conexion a la BD
+mongoose.connect(process.env.URL_DB, { useNewUrlParser: true }, (err, res) => {
 
-	if(body.nombre === undefined){
-		return res.status(400).json({
-			ok: false,
-			message: 'el nombre es necesario'
-		})
-	}
+	if( err ) throw err;
 
-	res.json({
-		persona: body
-	})
-})
+	console.log('Base de Datos ONLINE');
+});
 
-app.put('/', (req, res) => {
-	res.send('peticion PUT');
-})
-
-app.delete('/', (req, res) => {
-	res.send('peticion DELETE');
-})
-
+// puerto de estucha servidor
 app.listen(process.env.PORT,(req, res) =>{
 	console.log(`Escuchando por el puerto ${process.env.PORT}`);
 })
