@@ -110,13 +110,14 @@ app.post('/google', async (req, res) => {
 			}
 		}
 		else{
-			let usuario = new Usuario();
 
-			usuario.nombre = googleUser.nombre;
-			usuario.email = googleUser.email;
-			usuario.img = googleUser.img;
-			usuario.google = true;
-			usuario.password = ':)';
+			let usuario = new Usuario({
+				nombre: googleUser.nombre,
+				email: googleUser.email,
+				img: googleUser.img,
+				google: true,
+				password: bcrypt.hashSync(':)', 10)
+			})
 
 			usuario.save( (err, usuarioDB) => {
 				

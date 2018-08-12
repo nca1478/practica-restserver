@@ -6,6 +6,8 @@ const app = express();
 
 // modelos
 const Usuario = require('../models/usuario');
+
+// middlewares
 const { verificaToken, 
 		verificaAdminRole } 
 = require('../middlewares/autenticacion');
@@ -127,7 +129,7 @@ app.delete('/usuario/:id', [verificaToken, verificaAdminRole], (req, res) => {
 
 		res.json({
 			ok: true,
-			usurio: usuarioDB
+			usuario: usuarioDB
 		})
 
 	})
